@@ -32,3 +32,15 @@ CREATE TABLE users.user_roles
 INSERT INTO users.roles
 VALUES (1, 'ROLE_USER'),
        (2, 'ROLE_ADMIN');
+
+--changeset gbabiuc:set-unique-username splitStatements:false
+ALTER TABLE users.users
+    ADD UNIQUE (username);
+
+--changeset gbabiuc:set-unique-role_name splitStatements:false
+ALTER TABLE users.roles
+    ADD UNIQUE (name);
+
+--changeset gbabiuc:add-email-column-to-users-table splitStatements:false
+ALTER TABLE users.users
+    ADD email VARCHAR(255) UNIQUE;
