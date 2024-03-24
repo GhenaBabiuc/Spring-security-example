@@ -1,4 +1,4 @@
-package com.example.springsecurityexample.exceptions;
+package com.example.springsecurityexample.model.exception;
 
 import lombok.Data;
 

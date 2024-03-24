@@ -1,15 +1,15 @@
-package com.example.springsecurityexample.configs;
+package com.example.springsecurityexample.config;
 
 
-import com.example.springsecurityexample.utils.JwtTokenUtils;
+import com.example.springsecurityexample.service.util.JwtTokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
+import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
+    @Resource
     private JwtTokenUtils jwtTokenUtils;
 
     @Override
@@ -37,9 +37,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtils.getUsername(jwt);
             } catch (ExpiredJwtException e) {
-                log.debug("Время жизни токена вышло");
+                log.debug("The token's lifetime is up");
             } catch (SignatureException e) {
-                log.debug("Подпись неправильная");
+                log.debug("The signature is wrong");
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

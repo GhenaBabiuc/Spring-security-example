@@ -1,4 +1,4 @@
-package com.example.springsecurityexample.dtos;
+package com.example.springsecurityexample.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

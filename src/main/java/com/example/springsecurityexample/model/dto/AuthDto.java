@@ -1,9 +1,9 @@
-package com.example.springsecurityexample.dtos;
+package com.example.springsecurityexample.model.dto;
 
 import lombok.Data;
 
 @Data
-public class JwtRequest {
+public class AuthDto {
     private String username;
     private String password;
 }
