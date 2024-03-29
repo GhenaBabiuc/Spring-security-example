@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const UserPage = () => {
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/main/info', {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                });
+                const response = await axios.get('http://localhost:8080/main/info');
                 setUser(response.data);
             } catch (error) {
                 console.error(error);
@@ -22,11 +18,15 @@ const UserPage = () => {
         };
 
         fetchUser();
-    }, [navigate]);
+    }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
+    const handleLogout = async () => {
+        try {
+            await axios.post('http://localhost:8080/user/logout');
+            navigate('/login');
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (

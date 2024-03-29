@@ -1,6 +1,7 @@
 package com.example.springsecurityexample.service.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,27 @@ public class JwtTokenUtils {
                 .compact();
     }
 
+    public String generateRefreshToken(UserDetails userDetails) {
+        Date issuedDate = new Date();
+        Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime * 24L * 60L * 60L * 1000L);
+
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(issuedDate)
+                .setExpiration(expiredDate)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
+
+    public Boolean validateRefreshToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).build().parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
+    }
+
     public String getUsername(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
@@ -57,5 +79,4 @@ public class JwtTokenUtils {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
 }

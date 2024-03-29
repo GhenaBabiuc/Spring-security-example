@@ -1,10 +1,22 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
 const Login = () => {
-    const [credentials, setCredentials] = useState({username: '', password: ''});
     const navigate = useNavigate();
+    const [credentials, setCredentials] = useState({username: '', password: ''});
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                await axios.get('http://localhost:8080/main/secured', {withCredentials: true});
+                navigate('/user');
+            } catch (error) {
+            }
+        };
+
+        checkAuth();
+    }, []);
 
     const handleChange = (e) => {
         setCredentials({...credentials, [e.target.name]: e.target.value});
@@ -13,8 +25,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/user/auth', credentials);
-            localStorage.setItem('token', response.data.token);
+            await axios.post('http://localhost:8080/user/auth', credentials);
             navigate('/user');
         } catch (error) {
             console.error(error);
