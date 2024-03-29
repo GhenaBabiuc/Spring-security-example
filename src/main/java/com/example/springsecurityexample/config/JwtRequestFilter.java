@@ -43,8 +43,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            List<String> roles = jwtTokenUtils.getRoles(jwt);
-            log.debug("Roles: {}", roles);
 
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     username,

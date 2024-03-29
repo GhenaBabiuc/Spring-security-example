@@ -26,12 +26,7 @@ public class MainController {
     }
 
     @GetMapping("/info")
-    public String userData(Principal principal) {
-
-        if (principal == null) {
-            return "Unauthorized access";
-        }
-
-        return principal.getName();
+    public Principal userData(Principal principal) {
+        return principal;
     }
 }
